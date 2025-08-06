@@ -1,54 +1,115 @@
-# Ahmedabad_Realtime_Forecast_Model_RUVISION
+🌧️ Ahmedabad Realtime Forecast Model — RUVISION
+👉 Overview
+This repository runs an operational rainfall forecasting model for Ahmedabad using GFS reanalysis data and observed IMD rainfall. The model has two major components:
 
-👉 The.py modules primarily executes two operations:
+Data Download & Processing
 
-a) Data download and Processing of Variables
-b) Final Modeling to forecast for 3 lead days and generate plot
+Forecast Modeling (Lead Day 1–3) & Plotting
 
-👉Variables of Interest: GFS Data U1000 (U Component of wind at 1000 mbar pressure level), V1000 (V Component of wind at 1000 mbar pressure level), and PREC (Precipitation Rate)
-Observed Data: IMD gridded Daily Rain Data at 0.25 degree resolution👇
-Pai et al. (2014). Pai D.S., Latha Sridhar, Rajeevan M., Sreejith O.P., Satbhai N.S. and Mukhopadhyay B., 2014: Development of a new high spatial resolution (0.25° X 0.25°)Long period (1901-2024) daily gridded rainfall data set over India and its comparison with existing data sets over the region; MAUSAM, 65, 1(January 2014), pp1-18.
-Training Data: 2015-23
-Testing: 2024-Present
+📌 Variables of Interest
+Code	Description
+U1000	U-component of wind at 1000 mb
+V1000	V-component of wind at 1000 mb
+PREC	Precipitation rate from GFS
 
-👉 Initialization:
+Observed Rainfall: IMD gridded daily rainfall at 0.25° resolution
+📖 Reference: Pai et al., MAUSAM (2014)
 
-a) Initialisation hours: 6 UTC or IST 11:30 AM for the current day.
-b) Forecast hours: 15 to 84 lead hours subsequently be converted into daily basis forecasts (15-36 hrs: 1 lead day, 39-60 hrs: 2nd lead day and 63-84 hrs: third lead day)
-c) Initialize Latbounds, Lonbounds for Ahmedabad, 5X5 grid size
-d) Two stage Censored Quantile Regression threshold values
+Training Period: 2015–2023
 
-👉 Forecast Goal: We are going to generate Ahmedabad Rain forecast for tomorrow, day after tomorrow and the subsequent date. 
+Testing / Realtime Forecast: 2024–present
 
-👉 Steps to set up Ahmedabad Rain Forecast Model
+⏱️ Initialization Details
+Initialization Hour: 06 UTC (11:30 AM IST)
 
-a) Literature study for variable selection
-b) Download GFS Data from historical archive of NCEP-NCAR (0.25 degree resolution) for different variables at various levels  India
-c) Preprocessing of Variables with lat and lon bounds restricted within Ahmedabad City
-d) Historical Data saved in Excel for various Lead Days
-d) Model set up- Two stage Censored Quantile Regression (CQR) based on GLM, RF, XGB and LGR
-d) More than 100 experiments conducted with different variable combination
-e) Computed Scores like Recall, Precision, Accuracy, F1 value, HSS, CQVSS
-f) Based on scores, selected best variable combination
-g) Next build up code for real-time operations and webhosting.
+Forecast Hours:
 
-👉Realtime Operations
+Lead Day 1: 15–36 hrs
 
-a) Create basepath
-b) Create Folder with Variable name in basepath
-c) Provide URL Structure
-d) Download data for each variable and store into folders with variable names created in basepath. Pygrib Data Download from NOMADS/NCEP-NCAR for 06 hrs UTC
-e) There are two sections of Preprocessing: preprocess_wind function is for preprocessing data for variables like windspeeds (V1000 and U1000); and preprocess_precipitation function is for preprocessing Precipitation data. The method for preprocessing wind variables are same but for precipitation is different. Precipitation is achieved by converting Precipitation Rate into Acc Prec. If the acc is of 6 hours, then precipitation rate*3600*6 (Convert seconds into hr) and if the acc is of 3 hours, then precipitation rate*3600*3
-f) Split and reshape Function is to classify data into 3 lead days
-g) Aggregate and Save function is to convert hourly data into daily basis. If Variable== PREC, then we sum hourly data and if wind, then Average. Finally we are concatenating the current data to the past data saved already in excel for each of lead days.  
+Lead Day 2: 39–60 hrs
 
-h) #Modeling part
-The code picks up excel files saved for all lead days, and for each lead day, U1000, V1000 abd Prec variables are combined, normalized and PCA done to reduce number of features. The PCA data stored into pickle files. GLM based Two Step Censored Quantile Regression performed in order to forecast for next 3 days from the date of initialization. 
+Lead Day 3: 63–84 hrs
 
-👉Automation and Refactoring of Code
-👉GitHub Code Review
-👉Taken to HPC and the code will be scheduled to operate everyday at 5 PM and forecasts will be generated for next 3 days
-👉 Web hosting and statistical forecasts shown on clipre.ai
+Grid Size: 5x5 region over Ahmedabad
 
+Forecast Method: Two-stage Censored Quantile Regression (CQR)
+
+🎯 Forecast Objective
+To forecast daily rainfall in Ahmedabad for:
+
+Tomorrow
+
+Day after tomorrow
+
+Third day from initialization
+
+🧠 Model Setup Workflow
+1. Data Collection
+Literature study for variable selection
+
+Download historical GFS data (0.25°) from NCEP/NOMADS
+
+Restrict lat/lon to Ahmedabad city region
+
+2. Data Processing
+Save historical data (for each lead day) into Excel
+
+Preprocessing functions:
+
+preprocess_wind() for wind (U1000, V1000)
+
+preprocess_precipitation() for precipitation (rate → accumulation)
+
+Convert GFS hourly to daily:
+
+Precipitation: sum hourly values
+
+Wind: average hourly values
+
+Merge realtime data with past Excel files
+
+3. Modeling
+For each lead day:
+
+Combine U1000, V1000, PREC
+
+Normalize & apply PCA
+
+Save transformed features in .pkl
+
+Run GLM-based CQR for quantile forecasting (10th, 50th, 80th percentiles)
+
+⚙️ Realtime Operations
+Create base path & folders for each variable
+
+Construct download URLs from NOMADS
+
+Download GFS .grb2 data (06z run)
+
+Preprocess and split into 3 lead days
+
+Append new data to historical Excel
+
+Run quantile regression forecast
+
+Output Excel with daily quantile predictions
+
+🚀 Automation
+Code refactored & modularized
+
+Deployed on HPC cluster
+
+Scheduled daily at 5 PM IST
+
+Output forecasts hosted on: clipre.ai
+
+🛠️ Additional Tasks
+✅ GitHub Code Review
+
+✅ Experimented with 100+ variable combinations
+
+✅ Scoring Metrics: Accuracy, F1, Recall, HSS, CQVSS
+
+✅ Selected best-performing variable set
 
 

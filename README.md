@@ -15,7 +15,7 @@ PREC	    Precipitation rate
 📖 Reference: Pai et al., MAUSAM (2014)
 
 •	Training Period: 2015–2023
-•	Testing / Real-time Forecast: 2024–present
+•	Testing: 2024–present
 ________________________________________
 ⏱️ Initialization Details
 •	Initialization Hour: 06 UTC (11:30 AM IST)

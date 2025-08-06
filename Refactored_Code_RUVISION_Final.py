@@ -31,6 +31,7 @@ INIT_TIMES = [6]
 #Forecast Starts from 2:30 AM of next day and continuing upto 72 hrs or 3 days, ending at 23:30 hrs
 FORECAST_HOURS = list(range(15, 85, 3))
 GRID_SIZE = 25
+# Vertical and Horrizontal Components of winds at 1000 mbar pressure level and Precipitation rate_GFS variables as input to model
 VARIABLES = ['U1000', 'V1000', 'PREC']
 LEAD_DAYS = [1, 2, 3]
 
@@ -443,6 +444,8 @@ def forecast_future_rain(lday):
 
         if '80p' in df_jjas.columns:
             yield df_jjas['80p'].iloc[-1:], lday
+            
+#Plot future lead days taking current date as initialization
 
 def plot_last_3_days_bar(pred_series_list):
     combined = pd.concat([s for s, _ in pred_series_list])
@@ -466,7 +469,7 @@ def plot_last_3_days_bar(pred_series_list):
     plt.close()
     print(f"Bar plot saved to: {save_path}")
 
-# ----------------------------- MAIN ----------------------------- #
+# ----------------------------- MAIN FUNCTION----------------------------- #
 
 def main():
     # Step 1: Download & Process GFS Data
@@ -492,6 +495,7 @@ if __name__ == "__main__":
 
 
 # In[ ]:
+
 
 
 

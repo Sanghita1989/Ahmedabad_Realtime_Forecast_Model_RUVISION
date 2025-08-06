@@ -26,7 +26,7 @@ o	Lead Day 2: 39–60 hrs.
 o	Lead Day 3: 63–84 hrs.
 
 •	Grid Size: 5x5 region over Ahmedabad
-•	Forecast Method: Two-stage Censored Quantile Regression (CQR)
+•	Forecast Method: GLM based Two-stage Censored Quantile Regression (CQR)
 ________________________________________
 🎯 Forecast Objective
 

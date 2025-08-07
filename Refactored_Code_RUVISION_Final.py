@@ -310,7 +310,6 @@ def preprocess_variable(variable, directory):
 
 # ----------------------- PCA & CQM MODELING ----------------------- #
 
-
 #Pick excel files from directory updated every day and combine U1000, V1000, Prec for each lead day
 #Normalize and Conduct PCA
 #Saved transformed data in pickle format into directory
@@ -345,12 +344,12 @@ def load_data(pkl_path, obs_path):
 def split_data(X, Y, split_index=3269):
     return X.iloc[:split_index], X.iloc[split_index+3:], Y.iloc[:split_index], Y.iloc[split_index+3:]
 
-    #If Rain>0, Y_train converted to a binary classification target
-    #GLM Model fitted and predicted on X_train 
-    def binary_glm(X_train, Y_train):
-        y_binary = (Y_train > 0).astype(int)
-        glm = sm.GLM(y_binary, sm.add_constant(X_train), family=sm.families.Binomial()).fit()
-        return glm.predict(sm.add_constant(X_train))
+#If Rain>0, Y_train converted to a binary classification target
+#GLM Model fitted and predicted on X_train 
+def binary_glm(X_train, Y_train):
+    y_binary = (Y_train > 0).astype(int)
+    glm = sm.GLM(y_binary, sm.add_constant(X_train), family=sm.families.Binomial()).fit()
+    return glm.predict(sm.add_constant(X_train))
 
 #Building a CQM pipeline for probabilistic rainfall prediction.
 #Binary classification (to detect "rain or no rain")
@@ -495,6 +494,7 @@ if __name__ == "__main__":
 
 
 # In[ ]:
+
 
 
 

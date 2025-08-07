@@ -348,9 +348,9 @@ def split_data(X, Y, split_index=3269):
     #If Rain>0, Y_train converted to a binary classification target
     #GLM Model fitted and predicted on X_train 
     def binary_glm(X_train, Y_train):
-    y_binary = (Y_train > 0).astype(int)
-    glm = sm.GLM(y_binary, sm.add_constant(X_train), family=sm.families.Binomial()).fit()
-    return glm.predict(sm.add_constant(X_train))
+        y_binary = (Y_train > 0).astype(int)
+        glm = sm.GLM(y_binary, sm.add_constant(X_train), family=sm.families.Binomial()).fit()
+        return glm.predict(sm.add_constant(X_train))
 
 #Building a CQM pipeline for probabilistic rainfall prediction.
 #Binary classification (to detect "rain or no rain")
@@ -495,6 +495,7 @@ if __name__ == "__main__":
 
 
 # In[ ]:
+
 
 
 

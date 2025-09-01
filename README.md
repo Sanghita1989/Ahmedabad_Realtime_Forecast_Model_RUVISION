@@ -1,5 +1,9 @@
 🌧 Ahmedabad Real-time Forecast Model — RUVISION
 
+Execution Process:
+
+│── config.py │── download.py │── preprocessing.py │── modeling.py │── postprocessing.py
+
 👉 Overview
 This repository runs an operational rainfall forecasting model for Ahmedabad using GFS data and observed IMD rainfall. The model has two major components:
 1.	Data Download & Processing

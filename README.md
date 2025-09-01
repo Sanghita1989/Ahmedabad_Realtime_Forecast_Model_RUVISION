@@ -7,7 +7,7 @@ Execution Process:
 👉 Overview
 This repository runs an operational rainfall forecasting model for Ahmedabad using GFS data and observed IMD rainfall. The model has two major components:
 1.	Data Download & Processing
-2.	Forecast Modelling (Lead Day 1–3) & Plotting
+2.	Forecast Modelling (Lead Day 1–3) & Postprocessing
 ________________________________________
 📌 Variables of Interest
 Code	    Description

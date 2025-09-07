@@ -54,7 +54,7 @@ def build_config(args):
     # ---------------- OBS Files ---------------- #
     obs_files = {}
     for ld in args.lead_days:
-        filename = f"IMD_2015-2024_Daily Data_0.25 resolution Rain_OBS_LD_{ld}.xlsx"
+        filename = f"OBS_LD_{ld}.xlsx"
         filepath = os.path.join(args.base_dir, filename)
         if not os.path.exists(filepath):
             raise FileNotFoundError(f"Expected OBS file not found: {filepath}")
@@ -112,3 +112,4 @@ def build_config(args):
         # Runtime info
         "TODAY_STR": datetime.now().strftime("%Y-%m-%d")
     }
+

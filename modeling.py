@@ -202,3 +202,4 @@ def forecast_future_rain(lday):
             # yield the last 80p value and lead day (to support bar plotting)
             yield df_jjas['80p'].iloc[-1:], lday
 
+

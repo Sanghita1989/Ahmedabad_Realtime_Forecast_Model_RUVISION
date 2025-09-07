@@ -3,7 +3,7 @@
 
 # In[ ]:
 
-
+from config import parse_args, build_config
 from config import VARIABLES, LEAD_DAYS, TODAY_STR, PLOT_DIR
 from download import download_grib_files
 from preprocessing import preprocess_variable, aggregate_and_save
@@ -12,6 +12,9 @@ from postprocessing import plot_last_3_days_bar
 import os
 
 def main():
+    args = parse_args()
+    config = build_config(args)
+    
     # Step 1: Download & Process GFS Data
     for variable in VARIABLES:
         print(f"[INFO] Processing Variable: {variable}")
@@ -36,5 +39,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 

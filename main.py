@@ -24,10 +24,17 @@ def main():
         preprocess_and_save_pca(lday)
 
     # Step 3: Forecast + Plot
-    bar_series = list(forecast_future_rain(lday) for lday in LEAD_DAYS)
-    flat_series = [item for sublist in bar_series for item in sublist]
-    plot_last_3_days_bar(flat_series)
+    pred_series_list = []
+    for lday in LEAD_DAYS:
+        for result in forecast_future_rain(lday):
+            pred_series_list.append(result)
+
+    if pred_series_list:  # only plot if we actually have forecasts
+        plot_last_3_days_bar(pred_series_list)
+    else:
+        print("[WARNING] No forecasts available to plot.")
 
 if __name__ == "__main__":
     main()
+
 

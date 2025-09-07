@@ -10,14 +10,14 @@ import requests
 import pygrib
 import numpy as np
 from datetime import datetime, timedelta, timezone
-from config import BASE_DIR, INIT_TIMES, FORECAST_HOURS, GRID_SIZE
+from .config import build_config
 
 def create_output_folder(variable):
     path = os.path.join(BASE_DIR, variable)
     os.makedirs(path, exist_ok=True)
     return path
 
-def generate_url(current_date, init_hour, forecast_hour, variable):
+def generate_url(config, current_date, init_hour, forecast_hour, variable):
     base_url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl"
     var_flags = {
         "U1000": "var_UGRD=on&lev_1000_mb=on",
@@ -50,4 +50,5 @@ def download_grib_files(variable):
                 else:
                     print(f"Failed to download ({response.status_code}): {url}")
     return output_dir
+
 

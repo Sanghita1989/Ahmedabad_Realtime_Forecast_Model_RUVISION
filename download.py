@@ -12,8 +12,8 @@ import numpy as np
 from datetime import datetime, timedelta, timezone
 from .config import build_config
 
-def create_output_folder(variable):
-    path = os.path.join(BASE_DIR, variable)
+def create_output_folder(base_dir,variable):
+    path = os.path.join(base_dir, variable)
     os.makedirs(path, exist_ok=True)
     return path
     
@@ -25,13 +25,13 @@ def generate_url(config, current_date, init_hour, forecast_hour, variable):
             f"rightlon={config['SUBREGION']['rightlon']}&bottomlat={config['SUBREGION']['bottomlat']}")
     
 def download_grib_files(config,variable):
-    output_dir = create_output_folder(variable)
+    output_dir = create_output_folder(config["BASE_DIR"], variable)
     current_date = datetime.now(timezone.utc)
     #current_date = datetime.now(timezone.utc) - timedelta(days=1)
 
-    for init_time in INIT_TIMES:
-        for fh in FORECAST_HOURS:
-            url = generate_url(current_date, init_time, fh, variable)
+    for init_time in config["INIT_TIMES"]:
+        for fh in config["FORECAST_HOURS"]:
+            url = generate_url(config, current_date, init_time, fh, variable)
             filename = f"gfs.{current_date.strftime('%Y%m%d')}.t{init_time:02d}z.pgrb2.0p25.f{fh:03d}"
             filepath = os.path.join(output_dir, filename)
 
@@ -44,6 +44,7 @@ def download_grib_files(config,variable):
                 else:
                     print(f"Failed to download ({response.status_code}): {url}")
     return output_dir
+
 
 
 

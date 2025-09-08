@@ -14,8 +14,8 @@ def main():
     # Load config from arguments
     args = parse_args()
     config = build_config(args)
-    os.makedirs(cfg["PICKLE_DIR"], exist_ok=True)
-    os.makedirs(cfg["PLOT_DIR"], exist_ok=True)
+    os.makedirs(config["PICKLE_DIR"], exist_ok=True)
+    os.makedirs(config["PLOT_DIR"], exist_ok=True)
 
     current_date = datetime.now(timezone.utc)
 
@@ -48,5 +48,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 

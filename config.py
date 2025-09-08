@@ -72,7 +72,7 @@ def build_config(args):
         for ld in args.lead_days
     }
 
-    # ---------------- Fixed Ranges ---------------- #
+    # ---------------- Split into 3 lead-day dictionaries of 25-gridpoint frames (8 rows each) ---------------- #
     ranges = {
         1: list(range(15, 37, 3)),
         2: list(range(39, 61, 3)),
@@ -118,5 +118,6 @@ def build_config(args):
         # Runtime info
         "TODAY_STR": datetime.now().strftime("%Y-%m-%d")
     }
+
 
 

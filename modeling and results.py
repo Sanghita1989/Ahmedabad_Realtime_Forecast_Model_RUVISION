@@ -5,9 +5,9 @@ import statsmodels.api as sm
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
 
-def preprocess_and_save_pca(cfg, lday):
-    files = cfg["GFS_FILES"][lday]
-    dfs = [pd.read_excel(files[var]).set_index("DateTime") for var in cfg["VARIABLES"]]
+def preprocess_and_save_pca(config, lday):
+    files = config["GFS_FILES"][lday]
+    dfs = [pd.read_excel(files[var]).set_index("DateTime") for var in config["VARIABLES"]]
     df = pd.concat(dfs, axis=1)
 
     scaler = MinMaxScaler()
@@ -18,8 +18,8 @@ def preprocess_and_save_pca(cfg, lday):
     transformed = pca.fit_transform(df_scaled)
     transformed_df = pd.DataFrame(transformed, index=df.index)
 
-    filename = f"transformed_dataX_LD_{lday}_" + "_".join(cfg["VARIABLES"]) + ".pkl"
-    transformed_df.to_pickle(os.path.join(cfg["PICKLE_DIR"], filename))
+    filename = f"transformed_dataX_LD_{lday}_" + "_".join(config["VARIABLES"]) + ".pkl"
+    transformed_df.to_pickle(os.path.join(config["PICKLE_DIR"], filename))
 
 def load_data(pkl_path, obs_path):
     X_full = pd.read_pickle(pkl_path)
@@ -62,22 +62,23 @@ def cqm_pipeline(X_train, Y_train, X_test, thresholds):
         rain_dict[label] = np.maximum(rain_test, 0)
     return coefs_dict, rain_dict
 
-def forecast_future_rain(cfg, lday):
+def forecast_future_rain(config, lday):
     pattern = rf"transformed_dataX_LD_{lday}_(.+)\.pkl"
-    obs_path = cfg["OBS_FILES"][lday]
-    jjas_start, jjas_end = pd.Timestamp(cfg["JJAS_RANGES"][lday][0]), pd.Timestamp(cfg["JJAS_RANGES"][lday][1])
-    for pkl in glob.glob(os.path.join(cfg["PICKLE_DIR"], f"transformed_dataX_LD_{lday}_*.pkl")):
+    obs_path = config["OBS_FILES"][lday]
+    jjas_start, jjas_end = pd.Timestamp(config["JJAS_RANGES"][lday][0]), pd.Timestamp(config["JJAS_RANGES"][lday][1])
+    for pkl in glob.glob(os.path.join(config["PICKLE_DIR"], f"transformed_dataX_LD_{lday}_*.pkl")):
         var_match = re.search(pattern, os.path.basename(pkl))
         if not var_match: continue
-        out_dir = os.path.join(cfg["PLOT_DIR"], var_match.group(1))
+        out_dir = os.path.join(config["PLOT_DIR"], var_match.group(1))
         os.makedirs(out_dir, exist_ok=True)
         X, Y, X_full = load_data(pkl, obs_path)
         X_train, X_test, Y_train, Y_test = split_data(X, Y)
-        coefs2, _ = cqm_pipeline(X_train, Y_train, X_test, cfg["THRESHOLDS"])
-        _, rain_dict = cqm_pipeline(X, Y, X_full, cfg["THRESHOLDS"])
+        coefs2, _ = cqm_pipeline(X_train, Y_train, X_test, config["THRESHOLDS"])
+        _, rain_dict = cqm_pipeline(X, Y, X_full, config["THRESHOLDS"])
         df_pred = pd.DataFrame({k:v for k,v in rain_dict.items() if k in coefs2}, index=X_full.index)
         df_jjas = df_pred.loc[jjas_start:jjas_end]
         excel_path = os.path.join(out_dir, f"CQM_QuantileForecast_{var_match.group(1)}_2025JJAS_LD_{lday}.xlsx")
         df_jjas.to_excel(excel_path, index_label="Date")
         if "80p" in df_jjas.columns and not df_jjas["80p"].empty:
             yield pd.Series([float(df_jjas["80p"].iloc[-1])], index=[df_jjas.index[-1]]), lday
+

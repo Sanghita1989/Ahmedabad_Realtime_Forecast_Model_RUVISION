@@ -2,7 +2,7 @@
 
 Execution Process:
 
-│── config.py │── download.py │── preprocessing.py │── modeling.py │── postprocessing.py
+│── config.py │── download.py │── preprocessing.py │── modeling and results.py │── plot.py
 
 👉 Overview
 This repository runs an operational rainfall forecasting model for Ahmedabad using GFS data and observed IMD rainfall. The model has two major components:

@@ -24,11 +24,9 @@ def generate_url(config, current_date, init_hour, forecast_hour, variable):
             f"subregion=&toplat={config['SUBREGION']['toplat']}&leftlon={config['SUBREGION']['leftlon']}&"
             f"rightlon={config['SUBREGION']['rightlon']}&bottomlat={config['SUBREGION']['bottomlat']}")
     
-def download_grib_files(config,variable):
+def download_grib_files(config,variable, current_date):
     output_dir = create_output_folder(config["BASE_DIR"], variable)
-    current_date = datetime.now(timezone.utc)
-    #current_date = datetime.now(timezone.utc) - timedelta(days=1)
-
+    
     for init_time in config["INIT_TIMES"]:
         for fh in config["FORECAST_HOURS"]:
             url = generate_url(config, current_date, init_time, fh, variable)
@@ -44,6 +42,7 @@ def download_grib_files(config,variable):
                 else:
                     print(f"Failed to download ({response.status_code}): {url}")
     return output_dir
+
 
 
 

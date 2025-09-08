@@ -4,6 +4,7 @@ import pandas as pd
 import statsmodels.api as sm
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
+from config import build_config
 
 def preprocess_and_save_pca(config, lday):
     files = config["GFS_FILES"][lday]
@@ -81,4 +82,5 @@ def forecast_future_rain(config, lday):
         df_jjas.to_excel(excel_path, index_label="Date")
         if "80p" in df_jjas.columns and not df_jjas["80p"].empty:
             yield pd.Series([float(df_jjas["80p"].iloc[-1])], index=[df_jjas.index[-1]]), lday
+
 

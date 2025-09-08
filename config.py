@@ -78,6 +78,13 @@ def build_config(args):
         2: list(range(39, 61, 3)),
         3: list(range(63, 85, 3))
     }
+
+    # ---------------- GRIB Variable Names ---------------- #
+    GRIB_NAMES = {
+        "U1000": "U component of wind",
+        "V1000": "V component of wind",
+        "PREC": "Precipitation rate"
+    }
     # ---------------- Final Config ---------------- #
     return {
         "BASE_DIR": args.base_dir,
@@ -118,6 +125,7 @@ def build_config(args):
         # Runtime info
         "TODAY_STR": datetime.now().strftime("%Y-%m-%d")
     }
+
 
 
 

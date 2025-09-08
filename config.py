@@ -72,6 +72,12 @@ def build_config(args):
         for ld in args.lead_days
     }
 
+    # ---------------- Fixed Ranges ---------------- #
+    ranges = {
+        1: list(range(15, 37, 3)),
+        2: list(range(39, 61, 3)),
+        3: list(range(63, 85, 3))
+    }
     # ---------------- Final Config ---------------- #
     return {
         "BASE_DIR": args.base_dir,
@@ -112,4 +118,5 @@ def build_config(args):
         # Runtime info
         "TODAY_STR": datetime.now().strftime("%Y-%m-%d")
     }
+
 
